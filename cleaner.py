@@ -8,7 +8,9 @@ class SelfThreadCleaner:
         self.base_url = os.getenv("BASE_URL", "https://mbbs.zdjl.site/mk48by049.mbbs.cc")
         self.username = os.getenv("BOT_USERNAME")
         self.password = os.getenv("BOT_PASSWORD")
-        self.keep_latest = int(os.getenv("KEEP_LATEST_COUNT", "10"))
+        # 处理空字符串情况
+        keep_str = os.getenv("KEEP_LATEST_COUNT", "10")
+        self.keep_latest = int(keep_str) if keep_str else 10
 
         if not self.username or not self.password:
             raise ValueError("请设置 BOT_USERNAME 和 BOT_PASSWORD")
