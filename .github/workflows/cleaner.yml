@@ -1,0 +1,42 @@
+name: 每日清理用户帖子
+
+on:
+  schedule:
+    # 每天 UTC 00:00 运行（北京时间 08:00）
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read   # 只需要读取代码，不需要写入
+
+jobs:
+  clean-threads:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 安装系统依赖（验证码识别所需）
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-0
+
+      - name: 安装 Python 依赖
+        run: |
+          pip install -r requirements.txt
+
+      - name: 运行清理程序
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          BOT_USERNAME: ${{ secrets.BOT_USERNAME }}
+          BOT_PASSWORD: ${{ secrets.BOT_PASSWORD }}
+          TARGET_USER_ID: ${{ secrets.TARGET_USER_ID }}
+          KEEP_LATEST_COUNT: ${{ secrets.KEEP_LATEST_COUNT }}
+          ADMIN_MK49_TOKEN: ${{ secrets.ADMIN_MK49_TOKEN }}  # 可选，管理员删帖token
+        run: |
+          python cleaner.py
