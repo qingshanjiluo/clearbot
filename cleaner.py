@@ -10,7 +10,7 @@ class SelfThreadCleaner:
         self.password = os.getenv("BOT_PASSWORD")
         # 处理空字符串情况
         keep_str = os.getenv("KEEP_LATEST_COUNT", "10")
-        self.keep_latest = int(keep_str) if keep_str else 10
+        self.keep_latest = int(keep_str) if keep_str else 5
 
         if not self.username or not self.password:
             raise ValueError("请设置 BOT_USERNAME 和 BOT_PASSWORD")
