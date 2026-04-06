@@ -2,7 +2,7 @@ name: 每日清理自己的帖子
 
 on:
   schedule:
-    - cron: '0 0 * * *'   # 每天 UTC 00:00 运行
+    - cron: '0 22,4,10,13 * * *'
   workflow_dispatch:
 
 permissions:
